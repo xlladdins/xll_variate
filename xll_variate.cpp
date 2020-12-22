@@ -15,10 +15,11 @@ static AddIn xai_variate_cdf(
 		})
 	.FunctionHelp("Return the n-th derivative of the transformed cumulative distribution function at x.")
 	.Category(XLL_CATEGORY)
-	.Documentation(R"(
-If \(f\) is the density function of a random variable \(X\) then \(f_s(x) = f(x)\exp(s X - \kappa(s))\) is
-its <em>Esscher transform</em>.
-	)")
+	.Documentation(R"xyzyx(
+The <em>Esscher transform</em> of the density function <i>f</i> of a random variable <i>X</i> is 
+<i>f<sub>s</sub>(<i>x<i>) = <i>f</i>(<i>x</i>)<i>e<i><sup><i> sX</i> - κ(<i>s</i>)</sup>
+whenever κ(<i>s</i>) exists.
+	)xyzyx")
 );
 double WINAPI xll_variate_cdf(HANDLEX m, double x, double s, WORD n)
 {
@@ -74,8 +75,8 @@ static AddIn xai_variate_cumulant(
 	.FunctionHelp("Return n-th derivative of cumulant at s.")
 	.Category(XLL_CATEGORY)
 	.Documentation(R"(
-The <em>cumulant</em> of a random variable <math>X</math> is
-<math>κ(s) = log(E[e<sup>s X</sup>)])</math>.
+The <em>cumulant</em> of a random variable <i>X</i> is
+κ(<i>s</i>) = log(E[<i>e<sup> sX</sup></i>]).
 	)")
 );
 double WINAPI xll_variate_cumulant(HANDLEX m, double s, WORD n)
@@ -102,8 +103,12 @@ static AddIn xai_variate_edf(
 		Arg(XLL_DOUBLE, "x", "is the value."),
 		Arg(XLL_DOUBLE, "s", "is the Esscher transform parameter. Default is 0."),
 		})
-		.FunctionHelp("Return s transformed probability density at x.")
+		.FunctionHelp("Return the Esscher distribution at x.")
 	.Category(XLL_CATEGORY)
+	.Documentation(R"(
+The <em>Esscher distribution function</em> is the derivative with respect to <i>s</i>of the Esscher
+transform of the cumulative distribution.
+)")
 );
 double WINAPI xll_variate_edf(HANDLEX m, double x, double s)
 {

@@ -17,6 +17,10 @@ AddIn xai_variate_normal(
 	.Uncalced()
 	.FunctionHelp("Return handle to normal variate.")
 	.Category(XLL_CATEGORY)
+	.Documentation(R"xyzyx(
+The normal distribution function has density <i>f</i>(<i>x</i>) 
+= exp(-<i>x</i><sup>2</sup>/2)/&radic;<span style="text-decoration:overline">2&pi;</span>
+)xyzyx")
 );
 HANDLEX WINAPI xll_variate_normal(double mu, double sigma)
 {

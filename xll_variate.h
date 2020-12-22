@@ -10,15 +10,15 @@ namespace fms::variate {
 
 	// NVI base class for variates
 	template<class X = double, class S = X>
-	struct variate_base_impl {
+	struct variate_base {
 		typedef typename X xtype;
 		typedef typename S stype;
 
-		variate_base_impl()
+		variate_base()
 		{ }
-		variate_base_impl(const variate_base_impl&) = delete;
-		variate_base_impl& operator=(const variate_base_impl&) = delete;
-		virtual ~variate_base_impl()
+		variate_base(const variate_base&) = delete;
+		variate_base& operator=(const variate_base&) = delete;
+		virtual ~variate_base()
 		{ }
 
 		// transformed cumulative distribution function and derivatives
@@ -41,11 +41,9 @@ namespace fms::variate {
 		virtual X edf_(X x, S s) const = 0;
 	};
 
-	template<class X = double, class S = X>
-	using variate_base = variate_model<variate_base_impl<X, S>>;
-
-	// implement for a specific model and make a copy
+	// implement for a specific variate model
 	template<class M, class X = M::xtype, class S = M::stype>
+		requires fms::variate_concept<M>
 	class variate_handle : public variate_base<X, S>
 	{
 		M m;
@@ -72,5 +70,4 @@ namespace fms::variate {
 		}
 	};
 
-	
 }
