@@ -1,5 +1,4 @@
 ﻿// xll_variate.cpp - random variates
-#include "xll/xll/xll.h"
 #include "xll_variate.h"
 
 using namespace fms::variate;
@@ -18,7 +17,7 @@ static AddIn xai_variate_cdf(
 	.Documentation(R"xyzyx(
 The <em>Esscher transform</em> of the density function <i>f</i> of a random variable <i>X</i> is 
 <i>f<sub>s</sub>(<i>x<i>) = <i>f</i>(<i>x</i>)<i>e<i><sup><i> sX</i> - κ(<i>s</i>)</sup>
-whenever κ(<i>s</i>) exists.
+whenever the <a href="VARIATE.CUMULANT.html">cumulant</a> κ(<i>s</i>) exists.
 	)xyzyx")
 );
 double WINAPI xll_variate_cdf(HANDLEX m, double x, double s, WORD n)
@@ -45,7 +44,7 @@ static AddIn xai_variate_pdf(
 		Arg(XLL_DOUBLE, "x", "is the value."),
 		Arg(XLL_DOUBLE, "s", "is the Esscher transform parameter. Default is 0."),
 		})
-	.FunctionHelp("Return s transformed probability density at x.")
+		.FunctionHelp("Return s transformed probability density at x.")
 	.Category(XLL_CATEGORY)
 );
 double WINAPI xll_variate_pdf(HANDLEX m, double x, double s)
@@ -103,7 +102,7 @@ static AddIn xai_variate_edf(
 		Arg(XLL_DOUBLE, "x", "is the value."),
 		Arg(XLL_DOUBLE, "s", "is the Esscher transform parameter. Default is 0."),
 		})
-		.FunctionHelp("Return the Esscher distribution at x.")
+	.FunctionHelp("Return the Esscher distribution at x.")
 	.Category(XLL_CATEGORY)
 	.Documentation(R"(
 The <em>Esscher distribution function</em> is the derivative with respect to <i>s</i>of the Esscher

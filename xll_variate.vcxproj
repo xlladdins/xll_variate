@@ -78,19 +78,23 @@
     <LinkIncremental>true</LinkIncremental>
     <TargetExt>.xll</TargetExt>
     <OutDir>$(SolutionDir)$(Configuration)\</OutDir>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <LinkIncremental>false</LinkIncremental>
     <TargetExt>.xll</TargetExt>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <LinkIncremental>true</LinkIncremental>
     <TargetExt>.xll</TargetExt>
     <OutDir>$(SolutionDir)$(Platform)\$(Configuration)\</OutDir>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <LinkIncremental>false</LinkIncremental>
     <TargetExt>.xll</TargetExt>
+    <IncludePath>$(VC_IncludePath);$(WindowsSDK_IncludePath)</IncludePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -142,6 +146,7 @@
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <AdditionalOptions>/J /utf-8 %(AdditionalOptions)</AdditionalOptions>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
+      <ShowIncludes>false</ShowIncludes>
     </ClCompile>
     <Link>
       <SubSystem>Windows</SubSystem>
@@ -172,19 +177,34 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="xll_variate.cpp" />
+    <ClCompile Include="xll_variate_logistic.cpp" />
     <ClCompile Include="xll_variate_normal.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="packages.config" />
     <None Include="setup.bat" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="xll_variate.h" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="fms_variate\fms_variate.vcxproj">
+      <Project>{49aa7cf9-a26e-4386-a8e6-fc23bb529964}</Project>
+    </ProjectReference>
     <ProjectReference Include="xll\xll.vcxproj">
       <Project>{367249bb-b8a3-4671-b095-a5db904dbd6d}</Project>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
-  <ImportGroup Label="ExtensionTargets" />
+  <ImportGroup Label="ExtensionTargets">
+    <Import Project="packages\gsl-msvc-x64.2.4.0.8788\build\native\gsl-msvc-x64.targets" Condition="Exists('packages\gsl-msvc-x64.2.4.0.8788\build\native\gsl-msvc-x64.targets')" />
+    <Import Project="packages\gsl-msvc-x86.2.4.0.8788\build\native\gsl-msvc-x86.targets" Condition="Exists('packages\gsl-msvc-x86.2.4.0.8788\build\native\gsl-msvc-x86.targets')" />
+  </ImportGroup>
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('packages\gsl-msvc-x64.2.4.0.8788\build\native\gsl-msvc-x64.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\gsl-msvc-x64.2.4.0.8788\build\native\gsl-msvc-x64.targets'))" />
+    <Error Condition="!Exists('packages\gsl-msvc-x86.2.4.0.8788\build\native\gsl-msvc-x86.targets')" Text="$([System.String]::Format('$(ErrorText)', 'packages\gsl-msvc-x86.2.4.0.8788\build\native\gsl-msvc-x86.targets'))" />
+  </Target>
 </Project>

@@ -1,7 +1,6 @@
 // xll_variate_normal.cpp - Excel add-in for normal variates
 #include "fms_variate/fms_variate_normal.h"
 #include "xll_variate.h"
-#include "xll/xll/xll.h"
 
 using namespace fms::variate;
 using namespace xll;
@@ -18,15 +17,24 @@ AddIn xai_variate_normal(
 	.FunctionHelp("Return handle to normal variate.")
 	.Category(XLL_CATEGORY)
 	.Documentation(R"xyzyx(
-The normal distribution function has density <i>f</i>(<i>x</i>) 
-= exp(-<i>x</i><sup>2</sup>/2)/&radic;<span style="text-decoration:overline">2&pi;</span>
+The normal distribution has density function <i>f</i>(<i>x</i>) 
+= exp(-<i>x</i><sup>2</sup>/2)/&radic;<span style="text-decoration:overline">2&pi;</span>, 
+-&infin; &lt; <i>x</i> &lt; &infin;.
 )xyzyx")
 );
 HANDLEX WINAPI xll_variate_normal(double mu, double sigma)
 {
 #pragma XLLEXPORT
-	handle<variate_base<>> m(new variate_handle(affine(standard_normal<>{}, mu, sigma)));
+	HANDLEX h = INVALID_HANDLEX;
 
-	return m.get();
+	try {
+		handle<variate_base<>> v(new variate_handle(affine(standard_normal<>{}, mu, sigma)));
+		h = v.get();
+	}
+	catch (const std::exception& ex) {
+		XLL_ERROR(ex.what());
+	}
+
+	return h;
 }
 
