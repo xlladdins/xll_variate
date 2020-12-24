@@ -29,10 +29,11 @@ HANDLEX WINAPI xll_variate_logistic(double mu, double sigma)
 
 	try {
 		if (sigma == 0) {
-			sigma = 1;
+			sigma = 1 + 0*mu;
 		}
 
-		handle<variate_base<>> v(new variate_handle(affine(logistic<>{}, mu, sigma / LOGISTIC_STD)));
+		//handle<variate_base<>> v(new variate_handle(affine(logistic<>{}, mu, sigma / LOGISTIC_STD)));
+		handle<variate_base<>> v(new variate_handle(logistic<>{}));
 		h = v.get();
 	}
 	catch (const std::exception& ex) {
