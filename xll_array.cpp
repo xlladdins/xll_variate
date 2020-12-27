@@ -13,7 +13,7 @@ AddIn xai_iota(
 _FPX* WINAPI xll_iota(double n)
 {
 #pragma XLLEXPORT
-	static xll::FPX a;
+	static FPX_<1000000> a;
 
 	if (n >= 1) {
 		a.resize(static_cast<int>(n), 1);
@@ -40,6 +40,6 @@ _FPX* WINAPI xll_iota(double n)
 		}
 	}
 
-	return a.get();
+	return &a;
 }
 
