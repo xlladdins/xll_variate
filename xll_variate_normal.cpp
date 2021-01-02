@@ -10,16 +10,15 @@ using namespace xll;
 AddIn xai_variate_normal(
 	Function(XLL_HANDLE, "xll_variate_normal", "VARIATE.NORMAL")
 	.Args({
-		Arg(XLL_DOUBLE, "mu", "is the mean. Default is 0."),
-		Arg(XLL_DOUBLE, "sigma", "is the standard deviation. Default is 1.")
+		Arg(XLL_DOUBLE, "mu", "is the mean. Defalt is 0.", "0"),
+		Arg(XLL_DOUBLE, "sigma", "is the standard deviation. Default is 1.", "1")
 		})
 	.Uncalced()
 	.FunctionHelp("Return handle to normal variate.")
 	.Category(XLL_CATEGORY)
 	.Documentation(R"xyzyx(
-The normal distribution has density function <i>f</i>(<i>x</i>) 
-= exp(-<i>x</i><sup>2</sup>/2)/&radic;<span style="text-decoration:overline">2&pi;</span>, 
--&infin; &lt; <i>x</i> &lt; &infin;.
+The normal distribution has density function \(f(x) = \exp(-x^2/2)/\sqrt{2\pi}\), 
+\(-\infty < x < \infty\).
 )xyzyx")
 );
 HANDLEX WINAPI xll_variate_normal(double mu, double sigma)
