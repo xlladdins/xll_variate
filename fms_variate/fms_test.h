@@ -3,17 +3,16 @@
 #include <cassert>
 #include <algorithm>
 #include <chrono>
+#include <functional>
 #include <initializer_list>
 #include <valarray>
 
 namespace fms::test {
 
-	template<class F, class... Xs>
-	inline void repeat(size_t n, const F& f, Xs... xs)
+	template<class F>
+	inline std::function<void(void)> repeat(size_t n, const F& f)
 	{
-		while (n--) {
-			f(xs...);
-		}
+		return [&n, f]() { while (n--) f(); };
 	}
 
 	// time in milliseconds

@@ -33,8 +33,13 @@ int test_hypergeometric()
 		int skip = 1;
 		int terms = 40;
 		double t0, t1;
-		t0 = fms::test::time([x,eps,skip,terms,&F_00]() { return F_00.value(x, eps, skip, terms); });
-		t1 = fms::test::time([x]() { return exp(x); });
+		auto f0 = [x, eps, skip, terms, &F_00]() { return F_00.value(x, eps, skip, terms); };
+		t0 = fms::test::time(f0);
+		auto f1 = [x]() { return exp(x); };
+		t1 = fms::test::time(f1);
+		assert(t0 < 100 * t1); // not horrible
+		t0 = fms::test::time(fms::test::repeat(100, f0));
+		t1 = fms::test::time(fms::test::repeat(100, f1));
 		assert(t0 < 100 * t1); // not horrible
 	}
 	{
