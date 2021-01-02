@@ -2,10 +2,30 @@
 #pragma once
 #include <cassert>
 #include <algorithm>
+#include <chrono>
 #include <initializer_list>
 #include <valarray>
 
 namespace fms::test {
+
+	template<class F, class... Xs>
+	inline void repeat(size_t n, const F& f, Xs... xs)
+	{
+		while (n--) {
+			f(xs...);
+		}
+	}
+
+	// time in milliseconds
+	template<class F, class C = std::chrono::high_resolution_clock>
+	inline double time(const F& f)
+	{
+		auto start = C::now();
+		f();
+		auto stop = C::now();
+
+		return 1000*std::chrono::duration<double>(stop - start).count();
+	}
 
 	// f'(x) + f'''(x)h^2/6 + ...
 	template<class F, class X>

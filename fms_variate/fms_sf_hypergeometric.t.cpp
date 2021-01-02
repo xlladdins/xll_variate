@@ -1,9 +1,10 @@
 ﻿// fms_variate_hypergeometric.t.cpp - General hypergeometric function
 #include <cassert>
 #include <algorithm>
-#include "fms_hypergeometric.h"
+#include "fms_test.h"
+#include "fms_sf_hypergeometric.h"
 
-using namespace fms;
+using namespace fms::sf;
 
 template<class X>
 inline X abs1(X x) { return std::max<X>(X(1), abs(x)); }
@@ -24,6 +25,17 @@ int test_hypergeometric()
 		assert(abs(F - exp(x)) <= epsilon * F);
 		assert(abs(eps) <= epsilon);
 		assert(iters == 40);
+	}
+	{
+		Hypergeometric<X> F_00({}, {});
+		X x = 1;
+		X eps = epsilon;
+		int skip = 1;
+		int terms = 40;
+		double t0, t1;
+		t0 = fms::test::time([x,eps,skip,terms,&F_00]() { return F_00.value(x, eps, skip, terms); });
+		t1 = fms::test::time([x]() { return exp(x); });
+		assert(t0 < 100 * t1); // not horrible
 	}
 	{
 		X xs[] = { X(-1), X(0), X(1) };

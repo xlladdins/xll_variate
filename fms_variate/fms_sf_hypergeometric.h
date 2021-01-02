@@ -1,4 +1,4 @@
-// fms_hypergeometric.h - Hypergeometric function
+// fms_sf_hypergeometric.h - Hypergeometric function
 #pragma once
 #include <cmath>
 #include <concepts>
@@ -6,7 +6,7 @@
 #include <limits>
 #include <tuple>
 
-namespace fms {
+namespace fms::sf {
 
 	template<class X>
 	using list = std::initializer_list<X>;
