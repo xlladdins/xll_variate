@@ -31,15 +31,14 @@ namespace fms {
 		// return next term
 		X next(X x)
 		{
+			X dF = (an / bn) * xn / n_;
+
 			for (X ai : a) {
 				an *= ai + n;
 			}
 			for (X bi : b) {
 				bn *= bi + n;
 			}
-
-			X dF = (an / bn) * xn / n_;
-
 			xn *= x;
 			n_ *= ++n;
 
@@ -65,9 +64,9 @@ namespace fms {
 		std::tuple<X, X, int, int> value(X x, X eps = sqrt_eps, int skip = 40, int terms = 40)
 		{
 			X dF, maxF = 1;
-			int ignore = skip;
-			int small = 0;
-			int iters = 0;
+			int ignore = skip; // number of consecutive small terms to skip
+			int small = 0; // total number of terms skipped
+			int iters = 0; // number of iterations performed
 
 			// if (a)_n = 0 then all follwing terms are 0
 			while (an and ignore and terms - iters) {
@@ -87,7 +86,7 @@ namespace fms {
 				++iters;
 			}
 
-			return std::tuple(pFq, dF, small, iters);
+			return std::tuple(pFq, an == 0 ? 0 : dF, small, iters);
 		}
 	};
 
