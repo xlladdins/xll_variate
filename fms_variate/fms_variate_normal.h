@@ -70,6 +70,43 @@ namespace fms::variate {
 
 			return S(0);
 		}
+		static X cdf0(X x, S s, size_t n = 0)
+		{
+			X x_ = x - s;
+
+			if (n == 0) {
+				return (1 + erf(x_ / X(M_SQRT2))) / 2;
+			}
+
+			X phi = exp(-x_ * x_ / X(2)) / X(M_SQRT2PI);
+
+			if (n == 1) {
+				return phi;
+			}
+
+			// (d/dx)^n phi(x) = (-1)^n phi(x) H_n(x)
+			return phi * Hermite(n - 1, x_) * ((n & 1) ? 1 : -1);
+		}
+		// log E[exp(sX)]
+		static X cgf(S s)
+		{
+			return s * s / 2;
+		}
+		// log E[1(X <= x) exp(sX)]
+		static X cgf(S s, X x, bool regularized = false)
+		{
+			return log(mgf(s, x, regularized));
+		}
+		// E[exp(sX)]
+		static X mgf(S s)
+		{
+			return exp(cgf(s));
+		}
+		// E[1(X <= x) exp(sX)]
+		static X mgf(S s, X x, bool regularized = false)
+		{
+			return (regularized ? 1 : cgf(s)) * cdf0(x, s);
+		}
 		/*
 		template<size_t N>
 		static S cumulant(S s)
