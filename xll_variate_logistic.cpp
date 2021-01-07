@@ -8,7 +8,7 @@ using namespace xll;
 // int breakme = [&]() { return _crtBreakAlloc = 620; }();
 
 AddIn xai_variate_logistic(
-	Function(XLL_HANDLE, "xll_variate_logistic", "VARIATE.LOGISTIC")
+	Function(XLL_HANDLE, "xll_variate_logistic", "VARIATE_LOGISTIC")
 	.Args({
 		Arg(XLL_DOUBLE, "mu", "is the mean. Default is 0."),
 		Arg(XLL_DOUBLE, "sigma", "is the standard deviation. Default is 1.")
@@ -17,8 +17,8 @@ AddIn xai_variate_logistic(
 	.FunctionHelp("Return handle to logistic variate.")
 	.Category(XLL_CATEGORY)
 	.Documentation(R"xyzyx(
-The logistic cumulative distribution function is <i>F</i>(<i>x</i>) 
-= 1/(1 + <i>e<sup>-x</sup></i>), -&infin; &lt; <i>x</i> &lt; &infin;.
+The generalized logistic cumulative distribution function is \(F(\alpha, \beta; x) 
+= 1/B(\alpha, \beta) e^{-\beta x}/(1 + e^{-x}))^{\alpha + \beta}\), \(-\infty < x < \infty\).
 )xyzyx")
 );
 HANDLEX WINAPI xll_variate_logistic(double mu, double sigma)

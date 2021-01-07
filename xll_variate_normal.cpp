@@ -8,7 +8,7 @@ using namespace xll;
 // int breakme = [&]() { return _crtBreakAlloc = 620; }();
 
 AddIn xai_variate_normal(
-	Function(XLL_HANDLE, "xll_variate_normal", "VARIATE.NORMAL")
+	Function(XLL_HANDLE, "xll_variate_normal", "VARIATE_NORMAL")
 	.Args({
 		Arg(XLL_DOUBLE, "mu", "is the mean. Defalt is 0.", "0"),
 		Arg(XLL_DOUBLE, "sigma", "is the standard deviation. Default is 1.", "1")

@@ -43,7 +43,7 @@ namespace fms::variate {
 		}
 	}
 
-	// generalized logistic f(a,b;x) = e^{-b x}/(1 + e^{-x})^{a + b} / B(a,b)
+	// generalized logistic f(a,b;x) = e^{-a x}/(1 + e^{-x})^{a + b} / B(a,b)
 	template<class X = double, class S = X>
 		requires std::is_floating_point_v<X> && std::is_floating_point_v<S>
 	struct logistic {
@@ -54,7 +54,7 @@ namespace fms::variate {
 			: a(a), b(b)
 		{ }
 
-		// (d/dx)^n 1/(1 + e^{-x} = sum_{k=1}^n A_{n,k} e^{-k x}/(1 + e^{-x})^{k + 1}
+		// (d/dx)^n 1/(1 + e^{-x}) = sum_{k=1}^n A_{n,k} e^{-k x}/(1 + e^{-x})^{k + 1}
 		static X cdf0(X x, size_t n = 0)
 		{
 			X e = exp(-x);
