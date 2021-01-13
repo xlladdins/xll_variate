@@ -1,4 +1,4 @@
-// xll_hypergeometric.cpp = Hypergeometric functions
+// xll_sf_hypergeometric.cpp = Hypergeometric functions
 #include "fms_variate/fms_sf_hypergeometric.h"
 #include "xll/xll/xll.h"
 
@@ -20,9 +20,9 @@ AddIn xai_hypergeometric(
 The generalized hypergeometric function is
 \[
 \;_pF_q(a_1,\ldots, a_p; b_1,\ldots, b_q; x)
-	= \sum_{n=0}^\infty \frac{\Pi_{j=1}^p a_j^{(n)}}{\Pi_{k=1}^q b_k^{(n)}} \frac{x^n}{n!}
+	= \sum_{n=0}^\infty \frac{\Pi_{j=1}^p (a_j)_n}}{\Pi_{k=1}^q (b_k)_n} \frac{x^n}{n!}
 \]
-where \(a^{(n)} = \Gamma(a + n)/\Gamma(a) = a (a + 1) \cdots (a + n - 1)\) is the rising Pochhammer symbol.
+where \((a)_n} = \Gamma(a + n)/\Gamma(a) = a (a + 1) \cdots (a + n - 1)\) is the rising Pochhammer symbol.
 )xyzyx")
 );
 _FPX* WINAPI xll_hypergeometric(_FPX* pa, _FPX* pb, double x, BOOL regularized)
@@ -35,12 +35,7 @@ _FPX* WINAPI xll_hypergeometric(_FPX* pa, _FPX* pb, double x, BOOL regularized)
 		auto b = list<double>(begin(*pb), end(*pb));
 		Hypergeometric<double> pFq(a, b);
 
-		auto value = pFq.value(x);
-
-		result[0] = std::get<0>(value);
-		result[1] = std::get<1>(value);
-		result[2] = std::get<2>(value);
-		result[3] = std::get<3>(value);
+		std::tie(result[0], result[1], result[2], result[3]) = pFq.value(x);
 
 		if (regularized) {
 			result[0] = pFq.regularized();

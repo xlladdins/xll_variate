@@ -41,9 +41,46 @@ namespace fms::variate {
 
 			return (n == 0 or k > n) ? 0 : C(n - 1, k) + C(n - 1, k - 1);
 		}
+
+		// A_{n,k} = - (b + k) A_{n-1, k} + (a + b + k - 1) A_{n-1, k-1}, A_{0,0} = 1
+		template<class X = double>
+		inline X A(X a, X b, unsigned n, unsigned k)
+		{
+			if (k > n) {
+				return 0;
+			}
+			if (n == 0 and k == 0) {
+				return 1;
+			}
+
+			return -(b + k) * A(a, b, n - 1, k) + (a + b + k - 1) * A(a, b, n - 1, k - 1);
+		}
 	}
 
-	// generalized logistic f(a,b;x) = e^{-a x}/(1 + e^{-x})^{a + b} / B(a,b)
+#ifdef _DEBUG
+	template<class X>
+	inline void check_A(X a, X b)
+	{
+		static constexpr X eps = std::numeric_limits<X>::epsilon();
+		auto eq = [](X x, X y) { return abs(x - y) <= 10*eps; };
+		assert(eq(A(a, b, 0, 0), 1));
+		assert(eq(A(a, b, 0, 1), 0));
+		assert(eq(A(a, b, 0, -1), 0));
+
+		assert(eq(A(a, b, 1, 0), -b));
+		assert(eq(A(a, b, 1, 1), a + b));
+		assert(eq(A(a, b, 1, 2), 0));
+		assert(eq(A(a, b, 1, -1), 0));
+
+		assert(eq(A(a, b, 2, 0), b * b));
+		assert(eq(A(a, b, 2, 1), -(a + b) * (1 + 2 * b)));
+		assert(eq(A(a, b, 2, 2), (1 + a + b) * (a + b)));
+		assert(eq(A(a, b, 2, 3), 0));
+		assert(eq(A(a, b, 2, -1), 0));
+	}
+#endif // _DEBUT
+
+	// generalized logistic density is f(a,b;x) = e^{-b x}/(1 + e^{-x})^{a + b} / B(a,b)
 	template<class X = double, class S = X>
 		requires std::is_floating_point_v<X> && std::is_floating_point_v<S>
 	struct logistic {
@@ -54,64 +91,65 @@ namespace fms::variate {
 			: a(a), b(b)
 		{ }
 
-		// (d/dx)^n 1/(1 + e^{-x}) = sum_{k=1}^n A_{n,k} e^{-k x}/(1 + e^{-x})^{k + 1}
-		static X cdf0(X x, size_t n = 0)
+		// (d/dx)^n f(x) = sum_{k=0}^n A_{n,k} e^{-(b + k) x}/(1 + e^{-x})^{a + b + k}
+		static X cdf0(X a, X b, X x, unsigned n = 0)
 		{
-			X e = exp(-x);
+			ensure(a > 0 and b > 0);
+
+			X e_x = exp(-x);
+	
+			if (n == 0) {
+				return beta_inc(a, b, 1 / (1 + e_x));
+			}
+
+			unsigned n_ = n - 1;
+			X e_ = e_x / (1 + e_x);
+			X e_k = 1; // e_^k
+			X Ak = 0;
+			for (unsigned k = 0; k <= n_; ++k) {
+				Ak += A(a, b, n_, k) * e_k;
+				e_k *= e_;
+			}
+
+			return exp(-b * x) * pow(1 + e_x, -a - b) * Ak / gsl_sf_beta(a, b);
+		}
+		X cdf(X x, S s = 0, unsigned n = 0)
+		{
+			ensure(-a < s and s < b);
 
 			if (n == 0) {
-				return 1/(1 + e);
+				return beta_inc(a + s, b - s, 1/(1 + exp(-x)));
 			}
 
-			X f = 0;
-			X e_ = e;
-			X e1_ = 1 + e;
-			for (size_t k = 1; k <= n; ++k) {
-				e1_ *= 1 + e;
-				f += A(n, k) * e_ / e1_;
-				e_ *= e;
-			}
-
-			return f;
+			return cdf0(a + s, b - s, x, n);
 		}
-		static X cdf(X x, S s = 0, size_t n = 0)
-		{
-			ensure(-1 < s and s < 1);
-
-			if (s == 0) {
-				return cdf0(x, n);
-			}
-
-			if (n == 0) {
-				return beta_inc(1 + s, 1 - s, 1/(1 + exp(-x)));
-			}
-
-			X f = 0;
-			S sk = 1; // s^k
-			for (size_t k = 0; k < n; ++k) {
-				f += gsl_sf_choose((unsigned int)n - 1, (unsigned int)k) * cdf0(x, n - k) * sk;
-				sk *= s;
-			}
-
-			return exp(s * x - cumulant(s, 0)) * f;
-		}
-		static S cumulant(S s, size_t n = 0)
+		S cumulant(S s, unsigned n = 0)
 		{
 			ensure(-1 < s and s < 1);
 
 			if (n == 0) {
-				return gsl_sf_lngamma(1 + s) + gsl_sf_lngamma(1 - s);
+				return gsl_sf_lngamma(a + s) - gsl_sf_lngamma(a) 
+				     + gsl_sf_lngamma(b - s) - gsl_sf_lngamma(b);
 			}
 
 			int n_ = static_cast<int>(n - 1);
 
-			return gsl_sf_psi_n(n_, 1 + s) + ((n_&1) ? 1 : -1) * gsl_sf_psi_n(n_, 1 - s);
+			return gsl_sf_psi_n(n_, a + s) + ((n_&1) ? 1 : -1) * gsl_sf_psi_n(n_, b - s);
 		}
 		static X edf(X x, S s)
 		{
 			X u = cdf0(x, 0);
 
 			return beta_inc_1(1 + s, 1 - s, u) - beta_inc_2(1 + s, 1 - s, u);
+		}
+
+		static X beta(X a, X b)
+		{
+			return gsl_sf_beta(a, b);
+		}
+		static X beta_1(X a, X b)
+		{
+			return gsl_sf_beta(a, b) * (gsl_sf_psi_n(0, a) - gsl_sf_psi_n(0, a + b));
 		}
 
 		static X beta_inc(X a, X b, X u)
