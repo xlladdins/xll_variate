@@ -5,6 +5,7 @@ using namespace xll;
 
 #define CATEGORY "ARRAY"
 
+#ifdef _DEBUG
 #include <array>
 
 namespace fms {
@@ -37,6 +38,7 @@ static inline int array_ = []() {
 
 	return 0;
 }();
+#endif // _DEBUG
 
 AddIn xai_resize(
 	Function(XLL_FP, "xll_resize", "ARRAY.RESIZE")
@@ -145,7 +147,7 @@ AddIn xai_array(
 	.Args({
 		Arg({XLL_DOUBLE, "start", "is the first element of the sequence."}),
 		Arg({XLL_LONG, "count", "is the number of elements."}),
-		Arg({XLL_DOUBLE, "[incr]", "is the increment. Default is 1."}),
+		Arg({XLL_DOUBLE, "_incr", "is the increment. Default is 1."}),
 	})
 	.Category(CATEGORY)
 	.FunctionHelp("Return {start, start + incr, ..., start + (count-1)*incr}.")
@@ -175,9 +177,9 @@ AddIn xai_interval(
 	.Args({
 		Arg({XLL_DOUBLE, "start", "is the first element of the interval."}),
 		Arg({XLL_DOUBLE, "stop", "is the last element of the interval."}),
-		Arg({XLL_DOUBLE, "[incr]", "is the increment. Default is 1."}),
+		Arg({XLL_DOUBLE, "_incr", "is the increment (<=1) or number of rows (> 1). Default is 1."}),
 		})
-		.Category(CATEGORY)
+	.Category(CATEGORY)
 	.FunctionHelp("Return {start, start + incr, ..., stop}.")
 );
 _FPX* WINAPI xll_interval(double start, double stop, double incr)
@@ -185,14 +187,21 @@ _FPX* WINAPI xll_interval(double start, double stop, double incr)
 #pragma XLLEXPORT
 	static FPX a;
 
-	if (incr == 0) {
+	if (incr <= 0) {
 		incr = 1;
 	}
 	
-
-	a.resize(1 + static_cast<int>(abs((stop - start)/incr)), 1);
-	for (int i = 0; i < a.size(); ++i) {
-		a[i] = start + i * incr;
+	if (incr <= 1) {
+		a.resize(1 + static_cast<int>(abs((stop - start) / incr)), 1);
+		for (int i = 0; i < a.size(); ++i) {
+			a[i] = start + i * incr;
+		}
+	}
+	else {
+		a.resize(static_cast<unsigned>(incr) + 1, 1);
+		for (int i = 0; i < a.size(); ++i) {
+			a[i] = start + (stop - start) * i / incr;
+		}
 	}
 
 	return &a;

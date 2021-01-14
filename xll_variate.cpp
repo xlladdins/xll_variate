@@ -4,6 +4,39 @@
 using namespace fms::variate;
 using namespace xll;
 
+static AddIn xai_variate_affine(
+	Function(XLL_HANDLE, "xll_variate_affine", "VARIATE_AFFINE")
+	.Args({
+		Arg(XLL_HANDLE, "h", "is a handle to a variate."),
+		Arg(XLL_DOUBLE, "mu", "is the location parameter.", "0"),
+		Arg(XLL_DOUBLE, "sigma", "is the scale parameter. Default is 1.", "1"),
+		})
+	.Uncalced()
+	.FunctionHelp("Return a handle to the variate mu + sigma X.")
+	.Category(XLL_CATEGORY)
+	.Documentation(R"xyzyx(
+Given a handle to a random variate \(X\) return a new handle to
+the random variate \(\mu + \sigma X\).
+)xyzyx")
+);
+HANDLEX WINAPI xll_variate_affine(HANDLEX h, double a, double b)
+{
+#pragma XLLEXPORT
+	HANDLEX hab = INVALID_HANDLEX;
+
+	try {
+		handle<variate_base<>> h_(h);
+		ensure(h_);
+		handle<variate_base<>> v(new variate_handle(affine(*h_.ptr(), a, b)));
+		hab = v.get();
+	}
+	catch (const std::exception& ex) {
+		XLL_ERROR(ex.what());
+	}
+
+	return hab;
+}
+
 static AddIn xai_variate_cdf(
 	Function(XLL_DOUBLE, "xll_variate_cdf", "VARIATE.CDF")
 	.Args({
@@ -22,18 +55,18 @@ The <em>Esscher transform</em> of the density function \(f\) of a random variabl
 double WINAPI xll_variate_cdf(HANDLEX m, double x, double s, WORD n)
 {
 #pragma XLLEXPORT
-	handle<variate_base<>> m_(m);
+	double result = XLL_NAN;
 
 	try {
-		if (m_) {
-			return m_->cdf(x, s, n);
-		}
+		handle<variate_base<>> m_(m);
+		ensure(m_);
+		result = m_->cdf(x, s, n);
 	}
 	catch (const std::exception& ex) {
 		XLL_ERROR(ex.what());
 	}
 
-	return XLL_NAN;
+	return result;
 }
 
 static AddIn xai_variate_pdf(
@@ -49,18 +82,18 @@ static AddIn xai_variate_pdf(
 double WINAPI xll_variate_pdf(HANDLEX m, double x, double s)
 {
 #pragma XLLEXPORT
-	handle<variate_base<>> m_(m);
+	double result = XLL_NAN;
 
 	try {
-		if (m_) {
-			return m_->cdf(x, s, 1);
-		}
+		handle<variate_base<>> m_(m);
+		ensure(m_);
+		result = m_->cdf(x, s, 1);
 	}
 	catch (const std::exception& ex) {
 		XLL_ERROR(ex.what());
 	}
 
-	return XLL_NAN;
+	return result;
 }
 
 static AddIn xai_variate_cumulant(
@@ -79,18 +112,18 @@ The <em>cumulant</em> of a random variable \(X\) is \(κ(s) = \log(E[e^{sX}])\).
 double WINAPI xll_variate_cumulant(HANDLEX m, double s, WORD n)
 {
 #pragma XLLEXPORT
-	handle<variate_base<>> m_(m);
+	double result = XLL_NAN;
 
 	try {
-		if (m_) {
-			return m_->cumulant(s, n);
-		}
+		handle<variate_base<>> m_(m);
+		ensure(m_);
+		result = m_->cumulant(s, n);
 	}
 	catch (const std::exception& ex) {
 		XLL_ERROR(ex.what());
 	}
 
-	return XLL_NAN;
+	return result;
 }
 
 static AddIn xai_variate_edf(
@@ -110,16 +143,16 @@ transform of the cumulative distribution.
 double WINAPI xll_variate_edf(HANDLEX m, double x, double s)
 {
 #pragma XLLEXPORT
-	handle<variate_base<>> m_(m);
+	double result = XLL_NAN;
 
 	try {
-		if (m_) {
-			return m_->edf(x, s);
-		}
+		handle<variate_base<>> m_(m);
+		ensure(m_);
+		result = m_->edf(x, s);
 	}
 	catch (const std::exception& ex) {
 		XLL_ERROR(ex.what());
 	}
 
-	return XLL_NAN;
+	return result;
 }

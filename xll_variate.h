@@ -27,12 +27,12 @@ namespace fms::variate {
 		{ }
 
 		// transformed cumulative distribution function and derivatives
-		X cdf(X x, S s = 0, size_t n = 0) const
+		X cdf(X x, S s = 0, unsigned n = 0) const
 		{
 			return cdf_(x, s, n);
 		}
 		// (d/ds)^n log E[exp(sX)]
-		S cumulant(S s, size_t n = 0) const
+		S cumulant(S s, unsigned n = 0) const
 		{
 			return cumulant_(s, n);
 		}
@@ -41,8 +41,8 @@ namespace fms::variate {
 			return edf_(x, s);
 		}
 	private:
-		virtual X cdf_(X x, S s, size_t n) const = 0;
-		virtual S cumulant_(S s, size_t n) const = 0;
+		virtual X cdf_(X x, S s, unsigned n) const = 0;
+		virtual S cumulant_(S s, unsigned n) const = 0;
 		virtual X edf_(X x, S s) const = 0;
 	};
 
@@ -61,11 +61,11 @@ namespace fms::variate {
 		~variate_handle()
 		{ }
 
-		X cdf_(X x, S s = 0, size_t n = 0) const override
+		X cdf_(X x, S s = 0, unsigned n = 0) const override
 		{
 			return m.cdf(x, s, n);
 		}
-		S cumulant_(S s, size_t n = 0) const override
+		S cumulant_(S s, unsigned n = 0) const override
 		{
 			return m.cumulant(s, n);
 		}

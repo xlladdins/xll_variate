@@ -10,30 +10,32 @@ using namespace xll;
 AddIn xai_variate_logistic(
 	Function(XLL_HANDLE, "xll_variate_logistic", "VARIATE_LOGISTIC")
 	.Args({
-		Arg(XLL_DOUBLE, "mu", "is the mean. Default is 0."),
-		Arg(XLL_DOUBLE, "sigma", "is the standard deviation. Default is 1.")
+		Arg(XLL_DOUBLE, "a", "is alpha parameter. Default is 1.", "1"),
+		Arg(XLL_DOUBLE, "b", "is the beta parameter. Default is 1.", "1")
 		})
 	.Uncalced()
-	.FunctionHelp("Return handle to logistic variate.")
+	.FunctionHelp("Return handle to generalized logistic variate.")
 	.Category(XLL_CATEGORY)
 	.Documentation(R"xyzyx(
-The generalized logistic cumulative distribution function is \(F(\alpha, \beta; x) 
-= 1/B(\alpha, \beta) e^{-\beta x}/(1 + e^{-x}))^{\alpha + \beta}\), \(-\infty < x < \infty\).
+The generalized logistic density function is \(f(\alpha, \beta; x) 
+= e^{-\beta x} (1 + e^{-x}))^{-\alpha - \beta}/B(\alpha, \beta)\), \(-\infty < x < \infty\).
 )xyzyx")
 );
-HANDLEX WINAPI xll_variate_logistic(double mu, double sigma)
+HANDLEX WINAPI xll_variate_logistic(double a, double b)
 {
 #pragma XLLEXPORT
-	static double LOGISTIC_STD = sqrt(logistic<>::cumulant(0, 2));
 	HANDLEX h = INVALID_HANDLEX;
 
 	try {
-		if (sigma == 0) {
-			sigma = 1 + 0*mu;
+		if (a == 0) {
+			a = 1;
+		}
+		if (b == 0) {
+			b = 1;
 		}
 
 		//handle<variate_base<>> v(new variate_handle(affine(logistic<>{}, mu, sigma / LOGISTIC_STD)));
-		handle<variate_base<>> v(new variate_handle(logistic<>{}));
+		handle<variate_base<>> v(new variate_handle(logistic<>(a,b)));
 		h = v.get();
 	}
 	catch (const std::exception& ex) {
