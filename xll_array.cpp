@@ -6,6 +6,19 @@ using namespace xll;
 #define CATEGORY "ARRAY"
 
 #ifdef _DEBUG
+
+// stack: compile time - use index
+// heap: runtime - use index
+// lazy: generator/coroutine - have to call a function to get a value
+// 
+// type = primitive | array | vector | sequence | tuple | variant | stream
+// array = prod_n type - same type, known size
+// vector = sum_n prod_n type - same type, arbitrary size
+// sequence = prod type - same type, lazy
+// tuple = prod_{i in n} type_i  - known size, possibly different types
+// variant = sum_{i in n} type_i
+// stream = prod type_i - different types, lazy
+
 #include <array>
 
 namespace fms {
