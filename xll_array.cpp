@@ -5,54 +5,6 @@ using namespace xll;
 
 #define CATEGORY "ARRAY"
 
-#ifdef _DEBUG
-
-// stack: compile time - use index
-// heap: runtime - use index
-// lazy: generator/coroutine - have to call a function to get a value
-// 
-// type = primitive | array | vector | sequence | tuple | variant | stream
-// array = prod_n type - same type, known size
-// vector = sum_n prod_n type - same type, arbitrary size
-// sequence = prod type - same type, lazy
-// tuple = prod_{i in n} type_i  - known size, possibly different types
-// variant = sum_{i in n} type_i
-// stream = prod type_i - different types, lazy
-
-#include <array>
-
-namespace fms {
-
-	/*
-	template<class T, size_t... Ns>
-	struct array {};
-
-	template<class T, size_t N, size_t... Ns>
-	struct array : public std::array<fms::array<T, Ns...>, N> {
-		using std::array::std::array;
-	};
-	
-	template<class T, size_t N>
-	struct array : public std::array<T, N> {};
-
-	template<class T, size_t N>
-	struct array {
-		std::array<T, N> a;
-	};
-	*/
-
-}
-static inline int array_ = []() {
-	//array<double, 3, 2> a; // = { {1,2}, {3,4}, {5, 6} };
-	std::array<int, 3> a;
-	size_t n;
-	n = a.size();
-	n = sizeof(a);
-
-	return 0;
-}();
-#endif // _DEBUG
-
 AddIn xai_resize(
 	Function(XLL_FP, "xll_resize", "ARRAY.RESIZE")
 	.Args({
