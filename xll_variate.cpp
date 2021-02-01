@@ -130,8 +130,8 @@ static AddIn xai_variate_edf(
 	Function(XLL_DOUBLE, "xll_variate_edf", "VARIATE.EDF")
 	.Args({
 		Arg(XLL_HANDLE, "m", "is a handle to the variate."),
-		Arg(XLL_DOUBLE, "x", "is the value."),
 		Arg(XLL_DOUBLE, "s", "is the Esscher transform parameter. Default is 0."),
+		Arg(XLL_DOUBLE, "x", "is the value."),
 		})
 	.FunctionHelp("Return the Esscher distribution at x.")
 	.Category(XLL_CATEGORY)
@@ -140,7 +140,7 @@ The <em>Esscher distribution function</em> is the derivative with respect to <i>
 transform of the cumulative distribution.
 )")
 );
-double WINAPI xll_variate_edf(HANDLEX m, double x, double s)
+double WINAPI xll_variate_edf(HANDLEX m, double s, double x)
 {
 #pragma XLLEXPORT
 	double result = XLL_NAN;
@@ -148,7 +148,7 @@ double WINAPI xll_variate_edf(HANDLEX m, double x, double s)
 	try {
 		handle<variate_base<>> m_(m);
 		ensure(m_);
-		result = m_->edf(x, s);
+		result = m_->edf(s, x);
 	}
 	catch (const std::exception& ex) {
 		XLL_ERROR(ex.what());

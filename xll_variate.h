@@ -36,9 +36,9 @@ namespace fms::variate {
 		{
 			return cumulant_(s, n);
 		}
-		X edf(X x, S s = 0) const
+		X edf(S s, X x) const
 		{
-			return edf_(x, s);
+			return edf_(s, x);
 		}
 	private:
 		virtual X cdf_(X x, S s, unsigned n) const = 0;
@@ -69,9 +69,9 @@ namespace fms::variate {
 		{
 			return m.cumulant(s, n);
 		}
-		X edf_(X x, S s = 0) const override
+		X edf_(S s, X x) const override
 		{
-			return m.edf(x, s);
+			return m.edf(s, x);
 		}
 	};
 
