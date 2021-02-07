@@ -7,7 +7,7 @@ using namespace xll;
 
 AddIn xai_resize(
 	Function(XLL_FP, "xll_resize", "ARRAY.RESIZE")
-	.Args({
+	.Arguments({
 		Arg({XLL_FP, "array", "is an array."}),
 		Arg({XLL_WORD, "rows", "is the number of rows. Default is 1."}),
 		Arg({XLL_WORD, "columns", "is the number of columns. Default is 1."}),
@@ -36,7 +36,7 @@ _FPX* WINAPI xll_resize(_FPX* pa, WORD r, WORD c)
 
 AddIn xai_apply(
 	Function(XLL_FP, "xll_apply", "ARRAY.APPLY")
-	.Args({
+	.Arguments({
 		Arg({XLL_LPOPER, "function", "is a function to apply to the array."}),
 		Arg({XLL_FP, "array", "is an array."}),
 	})
@@ -48,7 +48,7 @@ _FPX* WINAPI xll_apply(LPOPER pf, _FPX* pa)
 #pragma XLLEXPORT
 
 	try {
-		for (int i = 0; i < size(*pa); ++i) {
+		for (unsigned i = 0; i < size(*pa); ++i) {
 			OPER result = Excel(xlUDF, *pf, OPER(pa->array[i]));
 			ensure(result.xltype == xltypeNum);
 
@@ -64,7 +64,7 @@ _FPX* WINAPI xll_apply(LPOPER pf, _FPX* pa)
 
 AddIn xai_iota(
 	Function(XLL_FP, "xll_iota", "ARRAY.IOTA")
-	.Args({
+	.Arguments({
 		Arg({XLL_DOUBLE, "x", "is the number of rows or the increment."}),
 	})
 	.Category(CATEGORY)
@@ -109,7 +109,7 @@ _FPX* WINAPI xll_iota(double x)
 
 AddIn xai_array(
 	Function(XLL_FP, "xll_sequence", "ARRAY.SEQUENCE")
-	.Args({
+	.Arguments({
 		Arg({XLL_DOUBLE, "start", "is the first element of the sequence."}),
 		Arg({XLL_LONG, "count", "is the number of elements."}),
 		Arg({XLL_DOUBLE, "_incr", "is the increment. Default is 1."}),
@@ -139,7 +139,7 @@ _FPX* WINAPI xll_sequence(double start, LONG count, double incr)
 
 AddIn xai_interval(
 	Function(XLL_FP, "xll_interval", "ARRAY.INTERVAL")
-	.Args({
+	.Arguments({
 		Arg({XLL_DOUBLE, "start", "is the first element of the interval."}),
 		Arg({XLL_DOUBLE, "stop", "is the last element of the interval."}),
 		Arg({XLL_DOUBLE, "_incr", "is the increment (<=1) or number of rows (> 1). Default is 1."}),

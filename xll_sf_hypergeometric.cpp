@@ -8,7 +8,7 @@ using fms::sf::list;
 
 AddIn xai_hypergeometric(
 	Function(XLL_FP, "xll_hypergeometric", "HYPERGEOMETRIC")
-	.Args({
+	.Arguments({
 		{XLL_FP, "a", "is an array of p numbers.", "={1}"},
 		{XLL_FP, "b", "is an array of q numbers.", "={1}" },
 		{XLL_DOUBLE, "x", "is the value at which to evaluate the function.", "=1"},
