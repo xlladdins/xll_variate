@@ -1,15 +1,15 @@
 // xll_variate.h - Interface class for random variates.
 #pragma once
-#include "xll/xll/xll.h"
 #include "fms_variate/fms_variate.h"
+#include "../xll/xll/xll.h"
 
 #ifndef XLL_CATEGORY
 #define XLL_CATEGORY "XLL"
 #endif 
 
-inline const int xll_variate_documentation = xll::Documentation("VARIATE", R"(
-Random variates.
-)");
+//inline const int xll_variate_documentation = xll::Documentation("VARIATE", R"(
+//Random variates.
+//)");
 
 namespace fms::variate {
 
