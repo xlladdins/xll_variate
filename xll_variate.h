@@ -7,9 +7,9 @@
 #define XLL_CATEGORY "XLL"
 #endif 
 
-inline const int xll_variate_documentation = xll::Documentation("VARIATE", R"(
-Random variates.
-)");
+//inline const int xll_variate_documentation = xll::Documentation("VARIATE", R"(
+//Random variates.
+//)");
 
 namespace fms::variate {
 

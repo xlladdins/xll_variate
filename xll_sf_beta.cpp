@@ -9,7 +9,7 @@ using namespace fms::variate;
 
 static AddIn xai_variate_beta(
 	Function(XLL_DOUBLE, "xll_variate_beta", "VARIATE.BETA")
-	.Args({
+	.Arguments({
 		Arg(XLL_DOUBLE, "a", "is the a parameter."),
 		Arg(XLL_DOUBLE, "b", "is the b parameter."),
 		Arg(XLL_DOUBLE, "u", "is the value."),
