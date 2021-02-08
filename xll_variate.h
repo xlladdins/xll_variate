@@ -1,7 +1,8 @@
 // xll_variate.h - Interface class for random variates.
 #pragma once
 #include "fms_variate/fms_variate.h"
-#include "../xll/xll/xll.h"
+//#define XLL_VERSION 4
+#include "xll/xll/xll.h"
 
 #ifndef XLL_CATEGORY
 #define XLL_CATEGORY "XLL"
@@ -11,7 +12,7 @@
 //Random variates.
 //)");
 
-namespace fms::variate {
+namespace xll {
 
 	// NVI base class for variates
 	template<class X = double, class S = X>
