@@ -119,3 +119,6 @@ Return the derivative of the Esscher transformed distribution with respect to \(
 	//using XXX = variate_model<XXX_impl>;
 
 }
+
+#undef FMS_HELP
+#undef FMS_DOC
