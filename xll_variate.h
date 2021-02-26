@@ -1,7 +1,8 @@
 // xll_variate.h - Interface class for random variates.
 #pragma once
-#include "xll/xll/xll.h"
 #include "fms_variate/fms_variate.h"
+//#define XLL_VERSION 4
+#include "xll/xll/xll.h"
 
 #ifndef XLL_CATEGORY
 #define XLL_CATEGORY "VARIATE"
