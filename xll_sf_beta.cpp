@@ -10,10 +10,10 @@ using namespace fms::variate;
 static AddIn xai_variate_beta(
 	Function(XLL_DOUBLE, "xll_variate_beta", "VARIATE.BETA")
 	.Arguments({
-		Arg(XLL_DOUBLE, "a", "is the a parameter."),
-		Arg(XLL_DOUBLE, "b", "is the b parameter."),
-		Arg(XLL_DOUBLE, "u", "is the value."),
-		Arg(XLL_WORD, "n", "indicates which derivative."),
+		Arg(XLL_DOUBLE, "a", "is the a parameter.", "1"),
+		Arg(XLL_DOUBLE, "b", "is the b parameter.", "1"),
+		Arg(XLL_DOUBLE, "u", "is the value.", "0.5"),
+		Arg(XLL_WORD, "n", "indicates which derivative.", "0"),
 		})
 	.FunctionHelp("Return the incomplete regulariazed beta distribution and partial derivatives.")
 	.Category(XLL_CATEGORY)

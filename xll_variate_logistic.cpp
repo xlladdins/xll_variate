@@ -1,4 +1,4 @@
-// xll_variate_	.cpp - Excel add-in for logistic variates
+// xll_variate_logistic.cpp - Excel add-in for logistic variates
 #include "fms_variate/fms_variate_logistic.h"
 #include "xll_variate.h"
 
@@ -31,7 +31,6 @@ HANDLEX WINAPI xll_variate_logistic(double a, double b)
 			b = 1;
 		}
 
-		//handle<variate_base<>> v(new variate_handle(affine(logistic<>{}, mu, sigma / LOGISTIC_STD)));
 		handle<variate_base<>> v(new variate_handle(logistic<>(a,b)));
 		h = v.get();
 	}

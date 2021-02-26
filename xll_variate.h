@@ -4,12 +4,8 @@
 #include "fms_variate/fms_variate.h"
 
 #ifndef XLL_CATEGORY
-#define XLL_CATEGORY "XLL"
+#define XLL_CATEGORY "VARIATE"
 #endif 
-
-//inline const int xll_variate_documentation = xll::Documentation("VARIATE", R"(
-//Random variates.
-//)");
 
 namespace fms::variate {
 

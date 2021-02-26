@@ -4,10 +4,21 @@
 using namespace fms::variate;
 using namespace xll;
 
+
+#ifdef _DEBUG
+Auto<OpenAfter> xaoa_variate_doc([]() {
+	xll::Documentation("VARIATE", R"(
+Random variates.
+)");
+	return TRUE;
+});
+#endif
+
+
 static AddIn xai_variate_affine(
 	Function(XLL_HANDLE, "xll_variate_affine", "\\VARIATE.AFFINE")
 	.Arguments({
-		Arg(XLL_HANDLE, "h", "is a handle to a variate."),
+		Arg(XLL_HANDLE, "h", "is a handle to a variate.", "\"=\\VARIATE.LOGISTIC(1,1)\""),
 		Arg(XLL_DOUBLE, "mu", "is the location parameter.", "0"),
 		Arg(XLL_DOUBLE, "sigma", "is the scale parameter. Default is 1.", "1"),
 		})
@@ -37,7 +48,7 @@ HANDLEX WINAPI xll_variate_affine(HANDLEX h, double a, double b)
 static AddIn xai_variate_normalize(
 	Function(XLL_HANDLE, "xll_variate_normalize", "\\VARIATE.NORMALIZE")
 	.Arguments({
-		Arg(XLL_HANDLE, "h", "is a handle to a variate."),
+		Arg(XLL_HANDLE, "h", "is a handle to a variate.", "\"=\\VARIATE.LOGISTIC(1,1)\""),
 		})
 	.Uncalced()
 	.FunctionHelp("Return a handle to the variate normalized to mean 0 and variance 1.")
@@ -69,10 +80,10 @@ HANDLEX WINAPI xll_variate_normalize(HANDLEX h)
 static AddIn xai_variate_cdf(
 	Function(XLL_DOUBLE, "xll_variate_cdf", "VARIATE.CDF")
 	.Arguments({
-		Arg(XLL_HANDLE, "m", "is a handle to the variate"),
-		Arg(XLL_DOUBLE, "x", "is the value"),
-		Arg(XLL_DOUBLE, "s", "is the Esscher transform parameter. Default is 0."),
-		Arg(XLL_WORD, "n", "is the derivative. Default is 0.")
+		Arg(XLL_HANDLE, "m", "is a handle to the variate", "\"=\\VARIATE.NORMAL(0,1)\""),
+		Arg(XLL_DOUBLE, "x", "is the value", "0"),
+		Arg(XLL_DOUBLE, "s", "is the Esscher transform parameter. Default is 0.", "0"),
+		Arg(XLL_WORD, "n", "is the derivative. Default is 0.", "0")
 		})
 	.FunctionHelp("Return the n-th derivative of the transformed cumulative distribution function at x.")
 	.Category(XLL_CATEGORY)
@@ -98,9 +109,9 @@ double WINAPI xll_variate_cdf(HANDLEX m, double x, double s, WORD n)
 static AddIn xai_variate_pdf(
 	Function(XLL_DOUBLE, "xll_variate_pdf", "VARIATE.PDF")
 	.Arguments({
-		Arg(XLL_HANDLE, "m", "is a handle to the variate."),
-		Arg(XLL_DOUBLE, "x", "is the value."),
-		Arg(XLL_DOUBLE, "s", "is the Esscher transform parameter. Default is 0."),
+		Arg(XLL_HANDLE, "m", "is a handle to the variate.", "\"=\\VARIATE.NORMAL(0,1)\""),
+		Arg(XLL_DOUBLE, "x", "is the value.", "0"),
+		Arg(XLL_DOUBLE, "s", "is the Esscher transform parameter. Default is 0.", "0"),
 		})
 	.FunctionHelp("Return the transformed probability density at x.")
 	.Category(XLL_CATEGORY)
@@ -129,9 +140,9 @@ double WINAPI xll_variate_pdf(HANDLEX m, double x, double s)
 static AddIn xai_variate_cumulant(
 	Function(XLL_DOUBLE, "xll_variate_cumulant", "VARIATE.CUMULANT")
 	.Arguments({
-		Arg(XLL_HANDLE, "m", "is a handle to the variate."),
-		Arg(XLL_DOUBLE, "s", "is the value."),
-		Arg(XLL_WORD, "n", "is the derivative. Default is 0.")
+		Arg(XLL_HANDLE, "m", "is a handle to the variate.", "\"=\\VARIATE.NORMAL(0,1)\""),
+		Arg(XLL_DOUBLE, "s", "is the value.", "0"),
+		Arg(XLL_WORD, "n", "is the derivative. Default is 0.", "0")
 		})
 	.FunctionHelp("Return n-th derivative of cumulant at s.")
 	.Category(XLL_CATEGORY)
@@ -157,9 +168,9 @@ double WINAPI xll_variate_cumulant(HANDLEX m, double s, WORD n)
 static AddIn xai_variate_edf(
 	Function(XLL_DOUBLE, "xll_variate_edf", "VARIATE.EDF")
 	.Arguments({
-		Arg(XLL_HANDLE, "m", "is a handle to the variate."),
-		Arg(XLL_DOUBLE, "s", "is the Esscher transform parameter. Default is 0."),
-		Arg(XLL_DOUBLE, "x", "is the value."),
+		Arg(XLL_HANDLE, "m", "is a handle to the variate.", "\"=\\VARIATE.NORMAL(0,1)\""),
+		Arg(XLL_DOUBLE, "s", "is the Esscher transform parameter. Default is 0.", "0"),
+		Arg(XLL_DOUBLE, "x", "is the value.", "0"),
 		})
 	.FunctionHelp("Return the derivative of the transformed distribution with respect to s.")
 	.Category(XLL_CATEGORY)
