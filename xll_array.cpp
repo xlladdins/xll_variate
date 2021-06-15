@@ -31,7 +31,7 @@ _FPX* WINAPI xll_resize(_FPX* pa, WORD r, WORD c)
 	memcpy(a.begin(), pa->array, a.size() * sizeof(double));
 
 
-	return &a;
+	return a.get();
 }
 
 AddIn xai_apply(
@@ -104,7 +104,7 @@ _FPX* WINAPI xll_iota(double x)
 		}
 	}
 
-	return &a;
+	return a.get();
 }
 
 AddIn xai_array(
@@ -134,7 +134,7 @@ _FPX* WINAPI xll_sequence(double start, LONG count, double incr)
 		a[i] = start + i * incr;
 	}
 
-	return &a;
+	return a.get();
 }
 
 AddIn xai_interval(
@@ -169,7 +169,7 @@ _FPX* WINAPI xll_interval(double start, double stop, double incr)
 		}
 	}
 
-	return &a;
+	return a.get();
 }
 
 

@@ -45,5 +45,5 @@ _FPX* WINAPI xll_hypergeometric(_FPX* pa, _FPX* pb, double x, BOOL regularized)
 		XLL_ERROR(ex.what());
 	}
 
-	return &result;
+	return result.get();
 }
