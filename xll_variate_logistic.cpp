@@ -10,7 +10,7 @@ using namespace xll;
 AddIn xai_variate_logistic(
 	Function(XLL_HANDLE, "xll_variate_logistic", "\\VARIATE.LOGISTIC")
 	.Arguments({
-		Arg(XLL_DOUBLE, "a", "is alpha parameter. Default is 1.", "1"),
+		Arg(XLL_DOUBLE, "a", "is the alpha parameter. Default is 1.", "1"),
 		Arg(XLL_DOUBLE, "b", "is the beta parameter. Default is 1.", "1")
 		})
 	.Uncalced()

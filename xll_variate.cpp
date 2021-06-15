@@ -25,7 +25,12 @@ static AddIn xai_variate_affine(
 	.Uncalced()
 	.FunctionHelp("Return a handle to the variate μ + σX.")
 	.Category(XLL_CATEGORY)
-	.Documentation(affine_doc)
+	.Documentation(R"xyzyx(
+Returns the \(n\)-th derivative of the Esscher transformed cumulative distrubution.
+The <em>Esscher transform</em> of the density function \(f\) of a random variable \(X\) is 
+\(f_s(x) = f(x)e^{sX - \kappa(s)}\) whenever the <a href="VARIATE.CUMULANT.html">cumulant</a> 
+\(\kappa(s)\) exists.
+)xyzyx")
 );
 HANDLEX WINAPI xll_variate_affine(HANDLEX h, double a, double b)
 {
@@ -53,7 +58,7 @@ static AddIn xai_variate_normalize(
 	.Uncalced()
 	.FunctionHelp("Return a handle to the variate normalized to mean 0 and variance 1.")
 	.Category(XLL_CATEGORY)
-	.Documentation(R"(Call <c>\\VARIATE.AFFINE</c> to return \((X - \mu)/\sigma\)
+	.Documentation(R"(Call <code>\\VARIATE.AFFINE</code> to return \((X - \mu)/\sigma\)
 where \(\mu\) is the mean and \(\sigma\) is the standard deviation of \(X\).
 )")
 );
